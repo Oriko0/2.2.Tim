@@ -14,13 +14,16 @@ import java.util.List;
 @Repository
 public class UserDaoImp implements UserDao {
 
-   @Autowired
    private SessionFactory sessionFactory;
+
+   @Autowired
+   public void setSessionFactory(SessionFactory sessionFactory) {
+      this.sessionFactory = sessionFactory;
+   }
 
    @Override
    public void add(User user, Car car) {
       user.setCar(car);
-      car.setUser(user);
       sessionFactory.getCurrentSession().save(user);
    }
 
@@ -41,7 +44,7 @@ public class UserDaoImp implements UserDao {
       TypedQuery<User> query1=sessionFactory.getCurrentSession().createQuery("from User " +
               "where userCar =:car", User.class);
       query1.setParameter("car", car);
-       return query1.getSingleResult();
+      return query1.getSingleResult();
    }
 
 }
